@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Invitation | Vinayaka & Revati</title>
+    <style>
+        /* General Mobile Fixes */
+        body, html { 
+            margin: 0; padding: 0; 
+            background-color: #FFFDF5; 
+            font-family: 'Arial', sans-serif; 
+            color: #0A1931; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .intro {
+            position: relative;
+            height: 100vh;
+            /* Use -webkit-fill-available for better iPhone height support */
+            height: -webkit-fill-available;
+            background: url('intro.png.jpeg') no-repeat center center/cover;
+            display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
+            text-align: center; color: #0A1931;
+            overflow: hidden;
+        }
+
+        /* Responsive Deity Headings */
+        .deity-container {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            z-index: 60;
+        }
+
+        .deity { 
+            padding: 6px 12px; 
+            background: rgba(255,255,255,0.85); 
+            border-radius: 20px; 
+            color: #B8860B; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            opacity: 0; 
+            transform: translateY(-8px); 
+            transition: all 0.6s cubic-bezier(.2,.9,.3,1); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 90%;
+            white-space: normal; /* Allow wrapping on small phones */
+        }
+        .deity.visible { opacity: 1; transform: translateY(0); }
+
+        .intro h1 { 
+            background: rgba(255,255,255,0.92); 
+            padding: 12px 20px; 
+            border-radius: 30px; 
+            margin-bottom: 30px; 
+            font-size: 1.5rem; /* Downsized for mobile */
+            border: 2px solid #B8860B; 
+            max-width: 85%; 
+        }
+
+        .intro h4 {
+            font-size: 1.1rem;
+            max-width: 85%;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.6);
+            padding: 10px;
+            border-radius: 15px;
+        }
+
+        /* Mobile-Friendly Krishna */
+        #krishna {
+            position: fixed; 
+            top: 75%; /* Lower on mobile so it doesn't block text */
+            right: 5%; 
+            width: 100px; /* Smaller for mobile */
+            z-index: 100; 
+            opacity: 0; 
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        /* The Stage (Background image area) */
+        .stage {
+            background-image: url('background_g.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* Disable fixed background on mobile to prevent 'jumping' scrolling */
+            background-attachment: scroll; 
+            padding: 50px 0;
+            position: relative;
+        }
+
+        /* Card Layout for Mobile */
+        .stage .layout { 
+            display: flex; 
+            flex-direction: column; /* Stack vertically by default */
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+
+        .parents-card {
+            position: relative;
+            color: white;
+            min-height: 350px;
+            border-radius: 18px; 
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        .parents-bg {
+            position: absolute; inset: 0; 
+            background-image: url('Parents.jpeg'); 
+            background-size: cover; 
+            background-position: center;
+        }
+        .parents-overlay {
+            position: absolute; inset: 0; 
+            display:flex; flex-direction:column; justify-content:flex-end; align-items:center; 
+            padding: 20px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.95); 
+            padding: 25px 15px; 
+            border-radius: 20px; 
+            text-align: center;
+            border: 3px solid #B8860B; 
+            opacity: 0; 
+            transform: translateY(30px); 
+            transition: 0.6s all ease;
+        }
+        .card.active { opacity: 1; transform: translateY(0); }
+        .card h2 { font-size: 1.5rem; color: #B8860B; margin: 0 0 10px 0; }
+        .card p { font-size: 1.1rem; margin: 5px 0; }
+
+        .venue { background: #0A1931; color: white; padding: 50px 20px; text-align: center; }
+        .btn { 
+            display: inline-block; 
+            padding: 15px 30px; 
+            background: #B8860B; 
+            color: white; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1rem;
+        }
+
+        /* Desktop specific overrides */
+        @media (min-width: 900px) {
+            .deity-container { flex-direction: row; justify-content: space-around; top: 20px; }
+            .deity { font-size: 1rem; max-width: 30%; }
+            .intro h1 { font-size: 2.2rem; }
+            .stage .layout { flex-direction: row; }
+            .stage .layout .left { flex: 1.5; }
+            .stage .layout .right { flex: 1; }
+            #krishna { width: 160px; top: 55%; }
+            .stage { background-attachment: fixed; }
+        }
+
+        /* Petals */
+        .petal { position: absolute; top: -20px; width: 10px; height: 10px; background: #FFE29A; border-radius: 50%; opacity: 0.8; pointer-events: none; z-index: 30; }
+        @keyframes floatDown { 0% { transform: translateY(-20px) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="intro">
+        <div class="deity-container">
+            <h3 class="deity" id="d1">Shri Shingataluru Veerabhadeshwara Namaha</h3>
+            <h3 class="deity" id="d2">Shri Gurudeva Prasanna</h3>
+            <h3 class="deity" id="d3">Shri Bhati Siddheshwaraswamy Namaha</h3>
+        </div>
+
+        <h4>Miracle From Above,<br> Our Little Baby Is On Its Way!</h4>
+        <h1>Vinayaka & Revati's Baby Shower</h1>
+        
+        <div class="controls" style="margin-bottom: 40px;">
+            <button class="btn" id="playBlessing" style="background: white; color: #B8860B; border: 2px solid #B8860B;">🔊 Play Music</button>
+        </div>
+    </div>
+
+    <div id="krishna">
+        <img src="krishna.png.jpeg" style="width: 100%; filter: drop-shadow(0 0 10px gold);">
+    </div>
+
+    <div class="stage">
+        <div id="petal-container"></div>
+        <div class="layout">
+            <div class="left">
+                <div class="card parents-card active">
+                    <div class="parents-bg"></div>
+                    <div class="parents-overlay">
+                        <p style="font-weight: bold; letter-spacing: 1px;">PARENTS TO BE</p>
+                        <h2 style="color: white; font-size: 1.3rem;">Vinayaka Rudradevarmath & Revati Vinayaka</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="card">
+                    <h2>Heartwarming Wishes</h2>
+                    <p>"A tiny miracle is on the way. Join us to welcome our little one with your love and blessings."</p>
+                </div>
+
+                <div class="card">
+                    <h2>Save the Date</h2>
+                    <p style="font-size: 1.8rem; color: #B8860B;">30 March 2026</p>
+                    <p>Lunch: 12:30 PM Onwards</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="venue">
+        <h2>Function Venue</h2>
+        <p>Pampaapati bhavana, Opposite KEB office,<br>
+        PB Road, Near KSRTC Bustand, Ranebennur,<br>
+        Haveri Dist. Karnataka 581115</p>
+        <a href="https://www.google.com/maps/search/?api=1&query=Pampaapati+bhavana+Ranebennur" target="_blank" class="btn">📍 View on Google Maps</a>
+    </div>
+
+    <audio id="songAudio" src="correct_song.mpeg" loop></audio>
+
+    <script>
+        // Deity Animation
+        const deities = document.querySelectorAll('.deity');
+        deities.forEach((d, i) => {
+            setTimeout(() => d.classList.add('visible'), 500 + (i * 800));
+        });
+
+        // Scroll Logic
+        window.addEventListener('scroll', () => {
+            const scroll = window.scrollY;
+            const h = window.innerHeight;
+            const krishna = document.getElementById('krishna');
+
+            // Show Krishna
+            if (scroll > 200) {
+                krishna.style.opacity = '1';
+                krishna.style.transform = `rotate(${Math.sin(scroll/50)*10}deg)`;
+            } else {
+                krishna.style.opacity = '0';
+            }
+
+            // Card Entrance
+            document.querySelectorAll('.card').forEach(c => {
+                if (c.getBoundingClientRect().top < h * 0.9) c.classList.add('active');
+            });
+        });
+
+        // Audio Toggle
+        const audio = document.getElementById('songAudio');
+        const playBtn = document.getElementById('playBlessing');
+        
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = "⏸️ Pause Music";
+            } else {
+                audio.pause();
+                playBtn.textContent = "🔊 Play Music";
+            }
+        });
+
+        // Petals
+        function createPetal() {
+            const container = document.getElementById('petal-container');
+            const p = document.createElement('div');
+            p.className = 'petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animation = `floatDown ${3 + Math.random() * 5}s linear forwards`;
+            container.appendChild(p);
+            setTimeout(() => p.remove(), 6000);
+        }
+        setInterval(createPetal, 500);
+    </script>
+</body>
+</html>
