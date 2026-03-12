@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Invitation | Vinayaka & Revati</title>
+    <style>
+        body, html { 
+            margin: 0; padding: 0; 
+            background-color: #FFFDF5; 
+            font-family: 'Arial', sans-serif; 
+            color: #0A1931; 
+            overflow-x: hidden;
+        }
+
+        /* 1. TOP HEADER (Prayer Section) */
+        .prayer-header {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            z-index: 100;
+            border-bottom: 1px solid #B8860B;
+        }
+
+        .deity { 
+            color: #B8860B; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            margin: 0;
+            opacity: 0;
+            transition: opacity 0.8s;
+            text-align: center;
+        }
+        .deity.visible { opacity: 1; }
+
+        /* 2. INTRO IMAGE SECTION */
+        .intro {
+            position: relative;
+            width: 100%;
+            height: 80vh; /* Shorter than full screen to prevent deity overlap */
+            background: url('intro.png.jpeg') no-repeat center center;
+            background-size: contain; /* Full photo visibility */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            /* increase bottom padding so the title/button group doesn't overlap any text baked into the image */
+            padding-bottom: 80px;
+        }
+
+        .event-title { 
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 2px solid #B8860B;
+            /* make the title sit tight above the play button */
+            margin-bottom: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .event-actions {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px; /* small gap between title and button */
+            align-items: center;
+        }
+
+        /* 3. DYNAMIC CONTENT SECTION (The Magic Part) */
+        .stage {
+            background: url('background_g.jpeg') center/cover no-repeat;
+            padding: 30px 15px;
+        }
+
+        .layout {
+            display: flex;
+            flex-direction: column; /* Vertical by default */
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* PARENTS PHOTO CARD */
+        .parents-card {
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            min-height: 350px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .parents-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Keeps whole photo visible */
+        }
+        .parents-overlay {
+            position: absolute;
+            bottom: 0; width: 100%;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        /* INFORMATION CARDS */
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .info-card { 
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            border: 3px solid #B8860B;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .info-card h2 { color: #B8860B; font-size: 1.4rem; margin: 0 0 10px 0; }
+        .info-card p { font-size: 1.1rem; margin: 5px 0; font-weight: bold; }
+
+        /* 4. VENUE SECTION */
+        .venue {
+            background: #0A1931;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #B8860B;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 5. LANDSCAPE DYNAMICS (Side-by-Side) */
+        @media (orientation: landscape) {
+            .prayer-header { flex-direction: row; justify-content: space-around; }
+            .intro { height: 100vh; background-size: contain; }
+            .layout { flex-direction: row; align-items: stretch; } /* Side by side */
+            .parents-card { flex: 1.2; }
+            .card-container { flex: 1; }
+        }
+
+        /* Tablet/Desktop Side-by-Side */
+        @media (min-width: 768px) {
+            .layout { flex-direction: row; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="prayer-header">
+        <p class="deity" id="d1">Shri Shingataluru Veerabhadeshwara Namaha</p>
+        <p class="deity" id="d2">Shri Gurudeva Prasanna</p>
+        <p class="deity" id="d3">Shri Bhati Siddheshwaraswamy Namaha</p>
+    </header>
+
+    <div class="intro">
+        <h4 class="event-title">Vinayaka & Revati's Baby Shower</h4>
+        <div class="event-actions">
+            <button class="btn" id="playBtn" style="background: white; color: #B8860B; border: 2px solid #B8860B;">🔊 Play Music</button>
+        </div>
+    </div>
+
+    <div class="stage">
+        <div class="layout">
+            <div class="parents-card">
+                <img src="Parents.jpeg" alt="Parents" class="parents-img">
+                <div class="parents-overlay">
+                    <p style="font-size: 0.8rem; letter-spacing: 2px;">PARENTS TO BE</p>
+                    <p style="font-size: 1.2rem; margin: 5px 0;">Vinayaka & Revati Vinayaka</p>
+                </div>
+            </div>
+
+            <div class="card-container">
+                <div class="info-card">
+                    <h2>Our Wishes</h2>
+                    <p>"Join us to welcome our little one with your love and blessings."</p>
+                </div>
+                <div class="info-card">
+                    <h2>Save the Date</h2>
+                    <p style="font-size: 1.8rem; color: #B8860B;">30 March 2026</p>
+                    <p>Lunch: 12:30 PM Onwards</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="venue">
+        <h2>Function Venue</h2>
+        <p>Pampaapati bhavana, Opposite KEB office,<br> PB Road, Ranebennur, Karnataka</p>
+        <a href="https://www.google.com/maps/search/?api=1&query=Pampaapati+bhavana+Ranebennur" target="_blank" class="btn">📍 View on Google Maps</a>
+    </div>
+
+    <audio id="songAudio" src="correct_song.mpeg" loop></audio>
+
+    <script>
+        // Reveal prayers slowly
+        document.querySelectorAll('.deity').forEach((d, i) => {
+            setTimeout(() => d.classList.add('visible'), 300 + (i * 500));
+        });
+
+        // Music Control
+        const audio = document.getElementById('songAudio');
+        const playBtn = document.getElementById('playBtn');
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) { 
+                audio.play(); 
+                playBtn.textContent = "⏸️ Pause Music"; 
+            } else { 
+                audio.pause(); 
+                playBtn.textContent = "🔊 Play Music"; 
+            }
+        });
+    </script>
+</body>
+</html>
